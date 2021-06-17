@@ -15,11 +15,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.d3if0032.assessment2.R
 import org.d3if0032.assessment2.data.SortOrder
+import org.d3if0032.assessment2.data.Task
 import org.d3if0032.assessment2.databinding.FragmentTasksBinding
 import org.d3if0032.assessment2.util.onQueryTextChanged
 
 @AndroidEntryPoint
-class TasksFragment : Fragment(R.layout.fragment_tasks) {
+class TasksFragment : Fragment(R.layout.fragment_tasks), TasksAdapter.OnItemClickListener {
 
     private val viewModel: TasksViewModel by viewModels()
 
@@ -28,7 +29,7 @@ class TasksFragment : Fragment(R.layout.fragment_tasks) {
 
         val binding = FragmentTasksBinding.bind(view)
 
-        val taskAdapter = TasksAdapter()
+        val taskAdapter = TasksAdapter(this)
 
         binding.apply {
             recylerViewTasks.apply {
@@ -43,6 +44,14 @@ class TasksFragment : Fragment(R.layout.fragment_tasks) {
         }
 
         setHasOptionsMenu(true)
+    }
+
+    override fun onItemClick(task: Task) {
+        viewModel.onTaskSelected(task)
+    }
+
+    override fun onCheckBoxClick(task: Task, isChecked: Boolean) {
+        viewModel.onTaskCheckedChanged(task, isChecked)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

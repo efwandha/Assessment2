@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import org.d3if0032.assessment2.data.PreferencesManager
 import org.d3if0032.assessment2.data.SortOrder
+import org.d3if0032.assessment2.data.Task
 import org.d3if0032.assessment2.data.TaskDao
 
 
@@ -27,10 +28,11 @@ class TasksViewModel @ViewModelInject constructor(
             preferencesFlow
         ){query, filterPreferences ->
             Pair(query, filterPreferences)
-        }
-            .flatMapLatest { (query, filterPreferences) ->
+        }.flatMapLatest { (query, filterPreferences) ->
             taskDao.getTasks(query, filterPreferences.sortOrder, filterPreferences.hideCompleted)
         }
+
+        val tasks = tasksFlow.asLiveData()
 
         fun onSortOrderSelected(sortOrder: SortOrder) = viewModelScope.launch {
             preferencesManager.updateSortOrder(sortOrder)
@@ -40,5 +42,8 @@ class TasksViewModel @ViewModelInject constructor(
             preferencesManager.updateHideCompleted((hideCompleted))
         }
 
-        val tasks = tasksFlow.asLiveData()
+        fun onTaskSelected(task: Task) {}
+        fun onTaskCheckedChanged(task: Task, isChecked: Boolean) = viewModelScope.launch {
+            taskDao.update(task.copy(completed = isChecked))
+        }
 }
