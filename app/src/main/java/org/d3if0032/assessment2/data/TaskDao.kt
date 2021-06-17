@@ -2,7 +2,6 @@ package org.d3if0032.assessment2.data
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import org.d3if0032.assessment2.ui.tasks.SortOrder
 
 @Dao
 interface TaskDao {
