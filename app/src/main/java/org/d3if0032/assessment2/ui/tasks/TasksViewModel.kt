@@ -13,6 +13,8 @@ import org.d3if0032.assessment2.data.PreferencesManager
 import org.d3if0032.assessment2.data.SortOrder
 import org.d3if0032.assessment2.data.Task
 import org.d3if0032.assessment2.data.TaskDao
+import org.d3if0032.assessment2.ui.ADD_TASK_RESULT_OK
+import org.d3if0032.assessment2.ui.EDIT_TASK_RESULT_OK
 
 
 class TasksViewModel @ViewModelInject constructor(
@@ -68,9 +70,21 @@ class TasksViewModel @ViewModelInject constructor(
             tasksEventChannel.send(TasksEvent.NavigateToAddTaskScreen)
         }
 
+        fun onAddEditResult(result: Int){
+            when (result){
+                ADD_TASK_RESULT_OK -> showTaskSaveConfirmationMessage("Task added")
+                EDIT_TASK_RESULT_OK -> showTaskSaveConfirmationMessage("Task added")
+            }
+        }
+
+        private fun showTaskSaveConfirmationMessage(text: String) = viewModelScope.launch {
+            tasksEventChannel.send(TasksEvent.ShowTaskSavedConfirmationMessage(text))
+        }
+
     sealed class TasksEvent {
         object NavigateToAddTaskScreen : TasksEvent()
         data class  NavigateToEditTaskScreen(val task: Task) : TasksEvent()
         data class ShowUndoDeleteTasksMessage(val task: Task) : TasksEvent()
+        data class ShowTaskSavedConfirmationMessage(val msg: String) : TasksEvent()
     }
 }
