@@ -7,7 +7,25 @@
 
     <fragment
         android:id="@+id/tasksFragment"
+        android:label="Tasks"
         android:name="org.d3if0032.assessment2.ui.tasks.TasksFragment"
-        android:label="fragment_tasks"
-        tools:layout="@layout/fragment_tasks" />
+        tools:layout="@layout/fragment_tasks">
+        <action
+            android:id="@+id/action_tasksFragment_to_addEditTaskFragment"
+            app:destination="@id/addEditTaskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEditTaskFragment"
+        android:label="{title}"
+        android:name="org.d3if0032.assessment2.ui.addedittask.AddEditTaskFragment"
+        tools:layout="@layout/fragment_add_edit_task">
+        <argument
+            android:name="task"
+            android:defaultValue="@null"
+            app:argType="org.d3if0032.assessment2.data.Task"
+            app:nullable="true" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+    </fragment>
 </navigation>
